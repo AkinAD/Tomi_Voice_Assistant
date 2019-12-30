@@ -12,45 +12,44 @@ r = sr.Recognizer()
 def record_audio(ask = False):
 	with sr.Microphone as source:
 		if ask:
-			print(ask)
-		print('Hey, whats up?')
+			tomi_talks(ask)
 		"""Capturing voice data"""
 		audio = r.listen(source)
 		voice_data = ''
 		try:
 			voice_data = recognize_google(audio)
 		except sr.UnknownValueError:
-			print('Could you say that again? I did not quite get that')
+			tomi_talks('Could you say that again? I did not quite get that')
 		except sr.RequestError:
-			print('Sorry, I am unable to reach my speach service at the moment')
+			tomi_talks('Sorry, I am unable to reach my speach service at the moment')
 		return voice_data
 
 
 def reply(voice_data):
 	if 'what is your name' in voice_data:
-		print('My friends call me Tomi')
+		tomi_talks('My friends call me Tomi')
 	if 'what time is it' in voice_data:
 		now = datetime.now() # current date and time
 		time = now.strftime("%I:%M %P")
-		print('the time is {}'.format(time))
-	if 'what is todays date'
+		tomi_talks('the time is {}'.format(time))
+	if 'what is todays date' in voice_data:
 		now = datetime.now() # current date and time
 		date = now.strftime("%A %B %d")
-		print('its {}'.format(date))
+		tomi_talks('its {}'.format(date))
 	if 'search' or 'google' or 'lookup' in voice_data:
 		search = record_audio('What would you like me to look up?')
 		url = 'https://google.com/search?q=' + search
 		webbrowser.get().open(url)
-		print('Here is what I found for ' + search)
+		tomi_talks('Here is what I found for ' + search)
 	if 'location' or 'take me to' or 'directions' in voice_data:
 		location = record_audio('Where would you like to go?')
 		url = 'https://google.nl/maps/place/' + location + '/&amp;'
 		webbrowser.get().open(url)
-		print('Showing ' + location + ' on google maps')
+		tomi_talks('Showing ' + location + ' on google maps')
 	if 'exit' or 'stop' or 'thank you' or 'thanks' in voice_data:
 		exit()
 
-def tomi_talsk(audio_string):
+def tomi_talks(audio_string):
 	tts = gTTS(text=audio_string, lang='en')
 	r = random.randint(1, 1000000)
 	audio_file = 'audio-' +str(r) + '.mp3'
@@ -60,7 +59,7 @@ def tomi_talsk(audio_string):
 	os.remove(audio_file)
 
 time.sleep(1)
-print('Hey, whats up?')
+tomi_talks('Hey, whats up?')
 while 1:
 	voice_data = record_audio()
 	reply(voice_data)
